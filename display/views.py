@@ -23,5 +23,6 @@ def submitUser(request):
     }
 
     response = requests.request("POST", url, headers=headers, data = payload)
+    
     data = response.text
     return render(request, 'temp.html', {'data':data})
