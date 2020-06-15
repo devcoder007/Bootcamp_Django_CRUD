@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from .models import UsersAPI
 from .serializers import UserApiSerializer
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 
 
 class UserApiView(APIView):
@@ -29,6 +31,8 @@ class UserApiView(APIView):
         serializer = UserApiSerializer(data=queryset)
         if serializer.is_valid(raise_exception=True):
             save_data = serializer.save()
+            emailSend(request.data['email'], request.data['name'])
+            print(request.data['email'], request.data['name'])
 
         return Response ({"Suucess":"User '{}' created successfully".format(save_data.name)})
 
@@ -36,6 +40,7 @@ class UserApiView(APIView):
     def put(self, request, pk):
         queryset = get_object_or_404(UsersAPI.objects.all(), pk=pk)  ## to get the stored element values
 
+        ## queryset.update(email="random@gmail.com")
         parsed_data = request.data  ## it will give the new values
         serializer = UserApiSerializer(instance=queryset, data=parsed_data, partial=True)
 
@@ -51,3 +56,19 @@ class UserApiView(APIView):
 
 
 
+def emailSend(email, username):
+    text_content = "Yay! Successfully registered"
+    subject = "Welcome to Our Website"
+    template_name = "emailactivation.html"
+
+    context = {
+        'username':username
+    }
+
+    from_email = "kampuskonnect.kk@gmail.com"
+    recipients = [email]
+    html_content = render_to_string(template_name, context)
+    email = EmailMultiAlternatives(subject, text_content, from_email, recipients)
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+    

@@ -76,6 +76,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'postmann.wsgi.application'
 
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'kampuskonnect.kk@gmail.com'
+DEFAULT_FROM_EMAIL = 'kampuskonnect.kk@gmail.com'
+EMAIL_HOST_PASSWORD = 'Rish@1996'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
+
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -129,7 +138,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload_images')
 
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+
+AWS_ACCESS_KEY_ID = 'AKIAZPF4PL7VPJYZN4PP'
+AWS_SECRET_ACCESS_KEY = '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'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = 'rishabh--django-upload'
+AWS_S3_REGION_NAME = 'ap-south-1'
